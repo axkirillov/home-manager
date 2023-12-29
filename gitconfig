@@ -1,0 +1,25 @@
+[user]
+	name = Aleksandr Kirillov
+	email = 32141102+axkirillov@users.noreply.github.com
+[core]
+	excludesfile = /Users/aleksandr.kirillov/.gitignore_global
+	pager = delta --syntax-theme=gruvbox-dark
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
+[merge]
+	conflictstyle = diff3
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+[diff]
+	tool = vimdiff
+	colorMoved = default
+[init]
+	defaultBranch = main
+
+[url "ssh://git@github.com/"]
+	insteadOf = https://github.com/
