@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   # Home Manager needs a bit of information about you and the
@@ -18,4 +18,8 @@
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
+
+  home.packages = [
+    pkgs.sl
+  ];
 }
