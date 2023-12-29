@@ -27,4 +27,10 @@
     enable = true;
     includes = [{ path = "~/.config/home-manager/.gitconfig"; }];
   };
+
+  programs.fzf = {
+	enable = true;
+	defaultCommand = "fd --type f -H";
+    defaultOptions = ["--bind=ctrl-j:accept"];
+  };
 }
