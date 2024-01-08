@@ -21,6 +21,7 @@
 
   home.packages = [
     pkgs.sl
+	pkgs.libiconv
   ];
 
   programs.git = {
