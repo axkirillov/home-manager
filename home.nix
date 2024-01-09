@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-
+{ pkgs, pinned, ... }:
 {
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
@@ -21,7 +20,7 @@
 
   home.packages = [
     pkgs.sl
-	pkgs.libiconv
+    pkgs.libiconv
   ];
 
   programs.git = {
@@ -30,8 +29,9 @@
   };
 
   programs.fzf = {
-	enable = true;
-	defaultCommand = "fd --type f -H";
-    defaultOptions = ["--bind=ctrl-j:accept"];
+    enable = true;
+    package = pinned.fzf;
+    defaultCommand = "fd --type f -H";
+    defaultOptions = [ "--bind=ctrl-j:accept" ];
   };
 }
