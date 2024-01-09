@@ -11,9 +11,8 @@
 
   outputs = { nixpkgs, home-manager, ... }:
     let
-      arch = "x86_64-darwin"; # or aarch64-darwin
-	  system = "x86_64-darwin"; # or aarch64-darwin
-      fzf-revision = import
+      system = "x86_64-darwin"; # or aarch64-darwin
+      fzf.pkgs = import
         (builtins.fetchGit {
           name = "0.42.0";
           url = "https://github.com/NixOS/nixpkgs/";
@@ -22,15 +21,15 @@
         })
         { inherit system; };
 
-      pinned.fzf = fzf-revision.fzf;
+      pinned.fzf = fzf.pkgs.fzf;
     in
     {
-      defaultPackage.${arch} =
-        home-manager.defaultPackage.${arch};
+      defaultPackage.${system} =
+        home-manager.defaultPackage.${system};
 
       homeConfigurations."aleksandr.kirillov" =
         home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.${arch};
+          pkgs = nixpkgs.legacyPackages.${system};
           modules = [ ./home.nix ];
           extraSpecialArgs = {
             pinned = pinned;
