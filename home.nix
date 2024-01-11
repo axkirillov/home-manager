@@ -38,4 +38,8 @@
     defaultCommand = "fd --type f -H";
     defaultOptions = [ "--bind=ctrl-j:accept" ];
   };
+
+  programs.zoxide = {
+    enable = true;
+  };
 }
