@@ -19,7 +19,6 @@
   programs.home-manager.enable = true;
 
   home.packages = [
-    pkgs.sl
     pkgs.libiconv
   ];
 
