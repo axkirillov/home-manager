@@ -22,6 +22,11 @@
     pkgs.libiconv
   ];
 
+  programs.fish = {
+    enable = true;
+    interactiveShellInit = "source ~/.config/home-manager/config.fish";
+  };
+
   programs.git = {
     enable = true;
     includes = [{ path = "~/.config/home-manager/.gitconfig"; }];
