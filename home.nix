@@ -42,4 +42,10 @@
   programs.zoxide = {
     enable = true;
   };
+
+  programs.tmux = {
+    enable = true;
+    keyMode = "vi";
+    extraConfig = "source ~/.config/home-manager/tmux.conf";
+  };
 }
