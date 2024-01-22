@@ -65,4 +65,8 @@
   programs.lazygit = {
     enable = true;
   };
+
+  programs.k9s = {
+	enable = true;
+  };
 }
