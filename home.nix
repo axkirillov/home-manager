@@ -20,7 +20,7 @@
 
   home.packages = [
     pkgs.libiconv
-	pkgs.fd
+    pkgs.fd
   ];
 
   programs.fish = {
@@ -59,6 +59,10 @@
   };
 
   programs.bat = {
-	enable = true;
+    enable = true;
+  };
+
+  programs.lazygit = {
+    enable = true;
   };
 }
