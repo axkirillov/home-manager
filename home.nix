@@ -20,6 +20,7 @@
 
   home.packages = [
     pkgs.libiconv
+	pkgs.fd
   ];
 
   programs.fish = {
@@ -50,6 +51,10 @@
   };
 
   programs.gh = {
-	enable = true;
+    enable = true;
+  };
+
+  programs.ripgrep = {
+    enable = true;
   };
 }
