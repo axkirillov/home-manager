@@ -21,7 +21,7 @@
   home.packages = [
     pkgs.libiconv
     pkgs.fd
-	pkgs.just
+    pkgs.just
   ];
 
   programs.fish = {
@@ -32,6 +32,9 @@
   programs.git = {
     enable = true;
     includes = [{ path = "~/.config/home-manager/.gitconfig"; }];
+    delta = {
+      enable = true;
+    };
   };
 
   programs.fzf = {
@@ -68,6 +71,10 @@
   };
 
   programs.k9s = {
-	enable = true;
+    enable = true;
+  };
+
+  programs.lsd = {
+    enable = true;
   };
 }
