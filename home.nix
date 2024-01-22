@@ -57,4 +57,8 @@
   programs.ripgrep = {
     enable = true;
   };
+
+  programs.bat = {
+	enable = true;
+  };
 }
