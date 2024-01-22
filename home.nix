@@ -21,6 +21,7 @@
   home.packages = [
     pkgs.libiconv
     pkgs.fd
+	pkgs.just
   ];
 
   programs.fish = {
