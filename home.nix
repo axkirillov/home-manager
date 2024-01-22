@@ -22,6 +22,7 @@
     pkgs.libiconv
     pkgs.fd
     pkgs.just
+	pkgs.git-filter-repo
   ];
 
   programs.fish = {
@@ -76,5 +77,9 @@
 
   programs.lsd = {
     enable = true;
+  };
+
+  programs.helix = {
+	enable = true;
   };
 }
