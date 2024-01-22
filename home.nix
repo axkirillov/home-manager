@@ -23,6 +23,7 @@
     pkgs.fd
     pkgs.just
 	pkgs.git-filter-repo
+	pkgs.mycli
   ];
 
   programs.fish = {
