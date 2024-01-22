@@ -48,4 +48,8 @@
     keyMode = "vi";
     extraConfig = "source ~/.config/home-manager/tmux.conf";
   };
+
+  programs.gh = {
+	enable = true;
+  };
 }
