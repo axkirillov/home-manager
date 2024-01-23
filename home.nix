@@ -22,8 +22,8 @@
     pkgs.libiconv
     pkgs.fd
     pkgs.just
-	pkgs.git-filter-repo
-	pkgs.mycli
+    pkgs.git-filter-repo
+    pkgs.mycli
   ];
 
   programs.fish = {
@@ -48,6 +48,7 @@
 
   programs.zoxide = {
     enable = true;
+    enableFishIntegration = true;
   };
 
   programs.tmux = {
@@ -81,6 +82,6 @@
   };
 
   programs.helix = {
-	enable = true;
+    enable = true;
   };
 }
