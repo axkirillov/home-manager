@@ -23,14 +23,5 @@ set PATH (go env GOPATH)/bin:$PATH
 # Generated for envman. Do not edit.
 test -s "$HOME/.config/envman/load.fish"; and source "$HOME/.config/envman/load.fish"
 
-if status is-interactive
-and not set -q TMUX
-    if tmux has-session -t home
-	exec tmux attach-session -t home
-    else
-        tmux new-session -s home
-    end
-end
-
 # just completions
 source $HOME/.config/home-manager/just.fish
