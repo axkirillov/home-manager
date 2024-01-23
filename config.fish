@@ -31,3 +31,6 @@ and not set -q TMUX
         tmux new-session -s home
     end
 end
+
+# just completions
+source $HOME/.config/home-manager/just.fish
