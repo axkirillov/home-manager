@@ -13,8 +13,6 @@ for file in $HOME/fish/secret/*.fish
 end
 
 # initializations go at the end:
-# prompt 
-starship init fish | source
 # rbenv
 status --is-interactive; and rbenv init - fish | source
 
