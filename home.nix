@@ -84,4 +84,9 @@
   programs.helix = {
     enable = true;
   };
+
+  programs.starship = {
+    enable = true;
+  };
+
 }
