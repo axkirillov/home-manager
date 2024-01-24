@@ -91,7 +91,7 @@
   };
 
   programs.direnv = {
-	enable = true;
+    enable = true;
   };
 }
 
