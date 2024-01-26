@@ -26,6 +26,8 @@
     pkgs.mycli
   ];
 
+  xdg.enable = true;
+
   programs.fish = {
     enable = true;
     interactiveShellInit = "source ~/.config/home-manager/config.fish";
@@ -72,16 +74,9 @@
 
   programs.lazygit = {
     enable = true;
-    settings = {
-      gui = {
-        expandFocusedSidePanel = true;
-      };
-      keybinding = {
-        confirm = "'<c-j>'";
-        submitEditorText = "'<c-j>'";
-      };
-    };
   };
+
+  xdg.configFile."lazygit/config.yml".source = ./lazygit.yml;
 
   programs.k9s = {
     enable = true;
