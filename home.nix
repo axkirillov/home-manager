@@ -72,6 +72,15 @@
 
   programs.lazygit = {
     enable = true;
+    settings = {
+      text = ''
+        keybinding:
+          universal:
+            confirm: '<c-j>'
+            submitEditorText: '<c-j>'
+        };
+      '';
+    };
   };
 
   programs.k9s = {
