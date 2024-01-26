@@ -73,15 +73,13 @@
   programs.lazygit = {
     enable = true;
     settings = {
-      text = ''
-        gui:
-          expandFocusedSidePanel: true
-        keybinding:
-          universal:
-            confirm: '<c-j>'
-            submitEditorText: '<c-j>'
-        };
-      '';
+      gui = {
+        expandFocusedSidePanel = true;
+      };
+      keybinding = {
+        confirm = "<c-j>";
+        submitEditorText = "<c-j>";
+      };
     };
   };
 
