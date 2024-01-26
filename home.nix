@@ -63,6 +63,7 @@
 
   programs.ripgrep = {
     enable = true;
+    arguments = [ "--hidden" ];
   };
 
   programs.bat = {
