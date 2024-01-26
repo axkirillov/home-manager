@@ -74,6 +74,8 @@
     enable = true;
     settings = {
       text = ''
+        gui:
+          expandFocusedSidePanel: true
         keybinding:
           universal:
             confirm: '<c-j>'
