@@ -77,8 +77,8 @@
         expandFocusedSidePanel = true;
       };
       keybinding = {
-        confirm = "<c-j>";
-        submitEditorText = "<c-j>";
+        confirm = "'<c-j>'";
+        submitEditorText = "'<c-j>'";
       };
     };
   };
