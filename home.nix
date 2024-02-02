@@ -24,6 +24,7 @@
     pkgs.just
     pkgs.git-filter-repo
     pkgs.mycli
+    pkgs.shellcheck
   ];
 
   xdg.enable = true;
@@ -89,6 +90,8 @@
   programs.helix = {
     enable = true;
   };
+
+  xdg.configFile."helix/config.toml".source = ./helix.toml;
 
   programs.starship = {
     enable = true;
