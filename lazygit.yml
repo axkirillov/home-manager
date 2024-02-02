@@ -1,6 +1,11 @@
 gui:
   expandFocusedSidePanel: true
 
+git:
+  paging:
+    colorArg: always
+    pager: delta --dark --paging=never
+
 keybinding:
   universal:
     confirm: '<c-j>'
