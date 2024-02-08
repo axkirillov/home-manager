@@ -25,6 +25,7 @@
     pkgs.git-filter-repo
     pkgs.mycli
     pkgs.shellcheck
+    pkgs.shfmt
   ];
 
   xdg.enable = true;
