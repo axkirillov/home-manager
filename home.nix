@@ -26,6 +26,7 @@
     pkgs.mycli
     pkgs.shellcheck
     pkgs.shfmt
+    pkgs.exiftool
   ];
 
   xdg.enable = true;
