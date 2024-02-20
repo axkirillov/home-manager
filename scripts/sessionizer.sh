@@ -6,7 +6,8 @@
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
-    selected=~/repo/$(ls ~/repo | fzf)
+	# shellcheck disable=SC2012
+	selected=$(ls ~/repo | fzf --bind "ctrl-j:accept")
 fi
 
 if [[ -z $selected ]]; then
@@ -18,12 +19,12 @@ selected_name=$(basename "$selected" | tr . _)
 tmux_running=$(pgrep tmux)
 
 if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
-    tmux new-session -s $selected_name -c $selected
+    tmux new-session -s "$selected_name" -c "$selected"
     exit 0
 fi
 
-if ! tmux has-session -t=$selected_name 2> /dev/null; then
-    tmux new-session -ds $selected_name -c $selected
+if ! tmux has-session -t="$selected_name" 2> /dev/null; then
+    tmux new-session -ds "$selected_name" -c "$selected"
 fi
 
-tmux switch-client -t $selected_name
+tmux switch-client -t "$selected_name"
