@@ -2,6 +2,7 @@
 	delete = !~/repo/home-manager/git/delete.sh
 	merge-into = !~/repo/home-manager/git/merge-into.sh
 	merge-pr = !~/repo/home-manager/git/merge-pr.sh
+	create = !~/repo/home-manager/git/create.sh
 [user]
 	name = Aleksandr Kirillov
 	email = 32141102+axkirillov@users.noreply.github.com
