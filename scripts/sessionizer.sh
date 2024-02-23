@@ -7,7 +7,7 @@ if [[ $# -eq 1 ]]; then
     selected=$1
 else
 	# shellcheck disable=SC2012
-	selected=$(ls ~/repo | fzf --bind "ctrl-j:accept")
+	selected=~/repo/$(ls ~/repo | fzf --bind "ctrl-j:accept")
 fi
 
 if [[ -z $selected ]]; then
