@@ -18,8 +18,5 @@ status --is-interactive; and rbenv init - fish | source
 
 set PATH (go env GOPATH)/bin:$PATH
 
-# Generated for envman. Do not edit.
-test -s "$HOME/.config/envman/load.fish"; and source "$HOME/.config/envman/load.fish"
-
 # just completions
 source $HOME/.config/home-manager/just.fish
