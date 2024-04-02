@@ -27,6 +27,9 @@
     pkgs.shellcheck
     pkgs.shfmt
     pkgs.exiftool
+    pkgs.imagemagick
+    pkgs.php
+    pkgs.php82Packages.composer
   ];
 
   xdg.enable = true;
@@ -106,4 +109,3 @@
     enable = true;
   };
 }
-
