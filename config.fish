@@ -12,10 +12,6 @@ for file in $HOME/fish/secret/*.fish
 	source $file
 end
 
-# initializations go at the end:
-# rbenv
-status --is-interactive; and rbenv init - fish | source
-
 set PATH (go env GOPATH)/bin:$PATH
 
 # just completions
