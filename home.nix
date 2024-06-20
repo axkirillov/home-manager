@@ -35,6 +35,12 @@
     (pkgs.nerdfonts.override {
 		fonts = [ "Hack" ];
 	})
+	pkgs.lua
+    pkgs.luajitPackages.luarocks
+	pkgs.kubectl
+	pkgs.wget
+	pkgs.mercurial
+	pkgs.rbenv
   ];
 
   xdg.enable = true;
