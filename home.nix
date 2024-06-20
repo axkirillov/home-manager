@@ -18,6 +18,8 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
+  fonts.fontconfig.enable = true;
+
   home.packages = [
     pkgs.libiconv
     pkgs.fd
@@ -30,6 +32,9 @@
     pkgs.imagemagick
     pkgs.php
     pkgs.php82Packages.composer
+    (pkgs.nerdfonts.override {
+		fonts = [ "Hack" ];
+	})
   ];
 
   xdg.enable = true;
