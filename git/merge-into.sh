@@ -16,6 +16,8 @@ current_branch=$(git symbolic-ref --short HEAD)
 # checkout the target branch
 git checkout "$1"
 
+git pull origin "$1"
+
 echo "git merge $current_branch $1 $2 $3 $4 $5 $6 $7 $8 $9"
 
 # merge the current branch into the target branch
