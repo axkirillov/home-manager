@@ -40,7 +40,7 @@
 	pkgs.kubectl
 	pkgs.wget
 	pkgs.mercurial
-	pkgs.rbenv
+	pkgs.ruby
   ];
 
   xdg.enable = true;
