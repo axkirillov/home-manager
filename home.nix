@@ -41,6 +41,7 @@
 	pkgs.wget
 	pkgs.mercurial
 	pkgs.ruby
+	pkgs.curl
   ];
 
   xdg.enable = true;
