@@ -42,7 +42,6 @@
 	pkgs.mercurial
 	pkgs.ruby
 	pkgs.curl
-	pkgs.terraform
   ];
 
   xdg.enable = true;
