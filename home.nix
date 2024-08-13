@@ -33,15 +33,18 @@
     pkgs.php
     pkgs.php82Packages.composer
     (pkgs.nerdfonts.override {
-		fonts = [ "Hack" ];
-	})
-	pkgs.lua
+      fonts = [ "Hack" ];
+    })
+    pkgs.lua
     pkgs.luajitPackages.luarocks
-	pkgs.kubectl
-	pkgs.wget
-	pkgs.mercurial
-	pkgs.ruby
-	pkgs.curl
+    pkgs.kubectl
+    pkgs.wget
+    pkgs.mercurial
+    pkgs.ruby
+    pkgs.curl
+    pkgs.httpie
+    pkgs.nodejs
+    pkgs.go
   ];
 
   xdg.enable = true;
