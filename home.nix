@@ -43,7 +43,6 @@
     pkgs.ruby
     pkgs.curl
     pkgs.httpie
-    pkgs.nodejs
     pkgs.go
   ];
 
