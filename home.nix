@@ -44,6 +44,7 @@
     pkgs.curl
     pkgs.httpie
     pkgs.go
+    pkgs.jq
   ];
 
   xdg.enable = true;
