@@ -45,6 +45,7 @@
     pkgs.httpie
     pkgs.go
     pkgs.jq
+    pkgs.redis
   ];
 
   xdg.enable = true;
