@@ -46,6 +46,7 @@
     pkgs.go
     pkgs.jq
     pkgs.redis
+    pkgs.coreutils
   ];
 
   xdg.enable = true;
