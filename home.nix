@@ -47,6 +47,7 @@
     pkgs.jq
     pkgs.redis
     pkgs.coreutils
+    pkgs.clipboard-jh
   ];
 
   xdg.enable = true;
