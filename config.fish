@@ -12,7 +12,7 @@ for file in $HOME/fish/secret/*.fish
 	source $file
 end
 
-set PATH (go env GOPATH)/bin:$PATH
+fish_add_path (go env GOPATH)/bin
 
 # just completions
 source $HOME/.config/home-manager/just.fish
