@@ -1,0 +1,2 @@
+#bindings
+bind \cg "lazygit"
