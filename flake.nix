@@ -3,13 +3,14 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-23.11-darwin";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     home-manager = {
       url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { nixpkgs, home-manager, ... }:
+  outputs = { nixpkgs, nixpkgs-unstable, home-manager, ... }:
     let
       system = "x86_64-darwin"; # or aarch64-darwin
       fzf.pkgs = import
@@ -21,7 +22,10 @@
         })
         { inherit system; };
 
-      pinned.fzf = fzf.pkgs.fzf;
+      pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
+      pinned = {
+        fzf = fzf.pkgs.fzf;
+      };
     in
     {
       defaultPackage.${system} =
@@ -33,6 +37,7 @@
           modules = [ ./home.nix ];
           extraSpecialArgs = {
             pinned = pinned;
+            pkgs-unstable = pkgs-unstable;
           };
         };
     };

@@ -1,4 +1,4 @@
-{ pkgs, pinned, ... }:
+{ pkgs, pinned, pkgs-unstable, ... }:
 {
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
