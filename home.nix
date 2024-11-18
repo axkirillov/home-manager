@@ -30,12 +30,6 @@
     pkgs.shfmt
     pkgs.exiftool
     pkgs.imagemagick
-    (pkgs.php.buildEnv {
-      extraConfig = ''
-        memory_limit = 8192m
-      '';
-    })
-    pkgs.php82Packages.composer
     (pkgs.nerdfonts.override {
       fonts = [ "Hack" ];
     })
