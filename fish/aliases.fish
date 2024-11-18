@@ -19,4 +19,4 @@ alias up "docker compose up -d --build"
 alias down "docker compose down"
 alias awsprof "~/scripts/awsprof.sh"
 alias python python3
-alias aider='python -m aider'
+alias aider='python -m aider --haiku'
