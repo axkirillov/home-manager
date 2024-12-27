@@ -8,11 +8,14 @@
       url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+ghostty = {
+      url = "github:ghostty-org/ghostty";
+    };
   };
 
   outputs = { nixpkgs, nixpkgs-unstable, home-manager, ... }:
     let
-      system = "x86_64-darwin"; # or aarch64-darwin
+      system = "aarch64-darwin";
       fzf.pkgs = import
         (builtins.fetchGit {
           name = "0.42.0";
@@ -40,5 +43,7 @@
             pkgs-unstable = pkgs-unstable;
           };
         };
+
+			formatter.${system} = nixpkgs.legacyPackages.${system}.nixfmt-rfc-style;
     };
 }
