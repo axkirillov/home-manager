@@ -31,7 +31,7 @@
           modules = [ ./home.nix ];
           extraSpecialArgs = {
             pinned = pinned;
-            pkgs-unstable = pkgs-unstable;
+            unstable = pkgs-unstable;
           };
         };
     };
