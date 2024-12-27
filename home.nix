@@ -1,4 +1,4 @@
-{ pkgs, pinned, ... }: {
+{ pkgs, pinned, pkgs-unstable, ... }: {
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
   home.username = "aleksandr.kirillov";
@@ -85,7 +85,10 @@
 
   programs.bat = { enable = true; };
 
-  programs.lazygit = { enable = true; };
+  programs.lazygit = {
+		enable = true;
+		package = pkgs-unstable.lazygit;
+	};
 
   xdg.configFile."lazygit/config.yml".source = ./lazygit.yml;
 
