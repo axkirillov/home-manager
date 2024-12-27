@@ -44,7 +44,6 @@
     pkgs.go
     pkgs.jq
     pkgs.redis
-    pkgs.coreutils
     pkgs.clipboard-jh
   ];
 
