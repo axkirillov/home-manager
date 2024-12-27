@@ -8,7 +8,6 @@
       url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    ghostty = { url = "github:ghostty-org/ghostty"; };
   };
 
   outputs = { nixpkgs, nixpkgs-unstable, home-manager, ... }:
@@ -35,7 +34,5 @@
             pkgs-unstable = pkgs-unstable;
           };
         };
-
-      #formatter.${system} = nixpkgs.legacyPackages.${system}.nixfmt-rfc-style;
     };
 }
