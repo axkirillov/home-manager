@@ -10,3 +10,6 @@ keybinding:
   universal:
     confirm: '<c-j>'
     submitEditorText: '<c-j>'
+
+os:
+  editPreset: 'nvim-remote'
