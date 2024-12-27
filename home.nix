@@ -1,5 +1,4 @@
-{ pkgs, pinned, ... }:
-{
+{ pkgs, pinned, ... }: {
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
   home.username = "aleksandr.kirillov";
@@ -30,9 +29,7 @@
     pkgs.shfmt
     pkgs.exiftool
     pkgs.imagemagick
-    (pkgs.nerdfonts.override {
-      fonts = [ "Hack" ];
-    })
+    (pkgs.nerdfonts.override { fonts = [ "Hack" ]; })
     pkgs.lua
     pkgs.luajitPackages.luarocks
     pkgs.kubectl
@@ -45,6 +42,7 @@
     pkgs.jq
     pkgs.redis
     pkgs.clipboard-jh
+    pkgs.nixfmt
   ];
 
   xdg.enable = true;
@@ -57,9 +55,7 @@
   programs.git = {
     enable = true;
     includes = [{ path = "~/.config/home-manager/.gitconfig"; }];
-    delta = {
-      enable = true;
-    };
+    delta = { enable = true; };
   };
 
   programs.fzf = {
@@ -80,39 +76,27 @@
     extraConfig = "source ~/.config/home-manager/tmux.conf";
   };
 
-  programs.gh = {
-    enable = true;
-  };
+  programs.gh = { enable = true; };
 
   programs.ripgrep = {
     enable = true;
     arguments = [ "--hidden" ];
   };
 
-  programs.bat = {
-    enable = true;
-  };
+  programs.bat = { enable = true; };
 
-  programs.lazygit = {
-    enable = true;
-  };
+  programs.lazygit = { enable = true; };
 
   xdg.configFile."lazygit/config.yml".source = ./lazygit.yml;
 
-  programs.k9s = {
-    enable = true;
-  };
+  programs.k9s = { enable = true; };
 
-  programs.lsd = {
-    enable = true;
-  };
+  programs.lsd = { enable = true; };
 
   programs.starship = {
     enable = true;
     enableFishIntegration = true;
   };
 
-  programs.direnv = {
-    enable = true;
-  };
+  programs.direnv = { enable = true; };
 }
