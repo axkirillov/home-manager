@@ -12,7 +12,7 @@
   # You can update Home Manager without changing this value. See
   # the Home Manager release notes for a list of state version
   # changes in each release.
-  home.stateVersion = "23.11";
+  home.stateVersion = "24.11";
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
@@ -86,13 +86,16 @@
   programs.bat = { enable = true; };
 
   programs.lazygit = {
-		enable = true;
-		package = unstable.lazygit;
-	};
+    enable = true;
+    package = unstable.lazygit;
+  };
 
   xdg.configFile."lazygit/config.yml".source = ./lazygit.yml;
 
-  programs.k9s = { enable = true; };
+  programs.k9s = {
+    enable = true;
+    package = unstable.k9s;
+  };
 
   programs.lsd = { enable = true; };
 
