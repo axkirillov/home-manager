@@ -13,6 +13,7 @@
 	diffFilter = delta --color-only
 [delta]
 	navigate = true
+	tabs = 4
 [merge]
 	conflictstyle = diff3
 [filter "lfs"]
