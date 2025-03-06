@@ -15,5 +15,4 @@ cat $list | fzf \
 	--preview 'jira issue view {1}' \
 	--bind 'alt-enter:execute(jira issue edit {1})' \
 	--bind 'ctrl-o:execute(jira open {1})' \
-  --bind 'ctrl-j:execute-silent(echo {1} | pbcopy)+abort' \
-	--bind 'ctrl-/:execute(~/repo/home-manager/scripts/jira-create-branch.sh {1})+abort'
+	--bind 'ctrl-j:execute(~/repo/home-manager/scripts/jira-create-branch.sh {1})+abort'
