@@ -3,7 +3,6 @@ alias ks="k9s"
 alias k=kubectl
 alias ls="lsd"
 alias ssh-add-rsa="ssh-add $HOME/.ssh/id_rsa"
-alias update-kitty="curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin"
 alias v=nvim
 alias vi=nvim
 alias vim=nvim
