@@ -5,5 +5,6 @@ read:
   - ~/instructions.md
 architect: true
 model: anthropic/claude-3-7-sonnet-20250219
+thinking-tokens: 8000
 editor-model: claude-3-5-sonnet-latest
 watch-files: true
