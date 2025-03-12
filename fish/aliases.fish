@@ -17,6 +17,5 @@ alias last-run "open -u $(gh run list --limit 1 --json url --jq '.[0].url')"
 alias up "docker compose up -d --build"
 alias down "docker compose down"
 alias awsprof "~/scripts/awsprof.sh"
-alias python python3
 alias jira "$HOME_MANAGER/scripts/jira.sh"
 alias psh "$HOME/scripts/fzf-pod-shell.sh"
