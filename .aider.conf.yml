@@ -2,7 +2,7 @@ cache-prompts: true
 gitignore: false
 read:
   - conventions.md
-  - instructions.md
+  - ~/instructions.md
 architect: true
 model: anthropic/claude-3-7-sonnet-20250219
 editor-model: claude-3-5-sonnet-latest
