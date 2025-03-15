@@ -2,15 +2,15 @@
 
 # Exit if no prompt provided
 if [ $# -eq 0 ]; then
-  echo "Usage: $(basename "$0") <search prompt>"
-  exit 1
+	echo "Usage: $(basename "$0") <search prompt>"
+	exit 1
 fi
 
 # Get the prompt from all arguments
 prompt="$*"
 
-# Call aichat with the ripgrep generation prompt
-aichat "you are a ripgrep expert assistant
+# Generate the ripgrep command, execute it, and display results
+rg_command=$(aichat "you are a ripgrep expert assistant
 
 USER QUERY: \"$prompt\"
 
@@ -29,4 +29,8 @@ REQUIREMENTS:
 Example outputs:
 'rg -l -i \"config.*setup\" --type=python'
 'rg -l -i -C2 \"api.*(auth|token)\" --type=js scripts/'
-'rg -l -i \"(script|tool).*search\" --glob=!\"*.git*\" scripts/'"
+'rg -l -i \"(script|tool).*search\" --glob=!\"*.git*\" scripts/'")
+
+# Execute the generated ripgrep command and prefix each line with "/add"
+echo -n "/add
+$(eval "$rg_command")" | pbcopy
