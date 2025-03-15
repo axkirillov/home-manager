@@ -11,7 +11,6 @@ alias repo "cd $HOME/repo/(ls $HOME/repo | fzf)"
 alias v 'fg $(eval "pgrep -P $fish_pid nvim") || nvim'
 alias up "docker compose up -d --build"
 alias down "docker compose down"
-alias awsprof "~/scripts/awsprof.sh"
 alias jira "$HOME_MANAGER/scripts/jira.sh"
 alias fzf-pod-shell "$HOME_MANAGER/scripts/fzf-pod-shell.sh"
 alias aigrep "$HOME_MANAGER/scripts/aigrep.sh"
