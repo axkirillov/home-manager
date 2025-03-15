@@ -9,7 +9,7 @@ fi
 # Get the prompt from all arguments
 prompt="$*"
 
-# Generate the ripgrep command, execute it, and display results
+# Generate the ripgrep command
 rg_command=$(aichat "you are a ripgrep expert assistant
 
 USER QUERY: \"$prompt\"
@@ -31,6 +31,6 @@ Example outputs:
 'rg -l -i -C2 \"api.*(auth|token)\" --type=js scripts/'
 'rg -l -i \"(script|tool).*search\" --glob=!\"*.git*\" scripts/'")
 
-# Execute the generated ripgrep command and prefix each line with "/add"
+# Execute the generated ripgrep command and prefix the result with /add
 echo -n "/add
 $(eval "$rg_command")" | pbcopy
