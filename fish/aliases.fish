@@ -8,7 +8,6 @@ alias vim=nvim
 alias add-ticket-number="~/repo/bulk-edit-git-commit-messages/begcm.sh"
 alias mfa ~/repo/dev-cluster/aws/aws-mfa-check.sh
 alias repo "cd $HOME/repo/(ls $HOME/repo | fzf)"
-alias hx "hx -c $HOME_MANAGER/helix/config.toml"
 alias v 'fg $(eval "pgrep -P $fish_pid nvim") || nvim'
 alias up "docker compose up -d --build"
 alias down "docker compose down"
