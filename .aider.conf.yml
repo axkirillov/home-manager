@@ -8,3 +8,5 @@ model: sonnet
 thinking-tokens: 8000
 editor-model: claude-3-5-sonnet-latest
 watch-files: true
+map-tokens: 0
+auto-accept-architect: false
