@@ -6,7 +6,7 @@ read:
 architect: true
 model: sonnet
 thinking-tokens: 8k
-editor-model: sonnet
+editor-model: anthropic/claude-3-7-sonnet-latest
 watch-files: true
 map-tokens: 0
 auto-accept-architect: false
