@@ -4,15 +4,15 @@
 
 # Check if API key is provided as environment variable
 if [ -z "$GEMINI_API_KEY" ]; then
-    echo "Error: GEMINI_API_KEY environment variable is not set"
-    echo "Usage: GEMINI_API_KEY=your_api_key ./commit-msg.sh"
-    exit 1
+	echo "Error: GEMINI_API_KEY environment variable is not set"
+	echo "Usage: GEMINI_API_KEY=your_api_key ./commit-msg.sh"
+	exit 1
 fi
 
 # Check if any files are staged
 if [ -z "$(git diff --cached --name-only)" ]; then
-    echo "No staged files found. Stage files with 'git add' first."
-    exit 1
+	echo "No staged files found. Stage files with 'git add' first."
+	exit 1
 fi
 
 # Create temporary files for concatenated content and diff
@@ -23,15 +23,15 @@ TMP_DIFF=$(mktemp)
 STAGED_FILES=$(git diff --cached --name-only)
 
 # Concatenate all staged files content
-echo "Staged files:" > "$TMP_FILES_CONTENT"
+echo "Staged files:" >"$TMP_FILES_CONTENT"
 for file in $STAGED_FILES; do
-    echo "--- $file ---" >> "$TMP_FILES_CONTENT"
-    cat "$file" >> "$TMP_FILES_CONTENT"
-    echo -e "\n\n" >> "$TMP_FILES_CONTENT"
+	echo "--- $file ---" >>"$TMP_FILES_CONTENT"
+	cat "$file" >>"$TMP_FILES_CONTENT"
+	echo -e "\n\n" >>"$TMP_FILES_CONTENT"
 done
 
 # Get the diff of staged changes
-git diff --cached > "$TMP_DIFF"
+git diff --cached >"$TMP_DIFF"
 
 # Build prompt
 PROMPT="Generate a concise and informative git commit message based on these staged changes.
@@ -62,7 +62,7 @@ ESCAPED_PROMPT=$(echo "$PROMPT" | jq -Rs .)
 PAYLOAD_FILE=$(mktemp)
 
 # Write properly formatted JSON to the temp file
-cat > "$PAYLOAD_FILE" << EOF
+cat >"$PAYLOAD_FILE" <<EOF
 {
   "contents": [
     {
@@ -87,22 +87,22 @@ ERROR_OUTPUT=$(mktemp)
 
 # Make the API call
 curl -s "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=$GEMINI_API_KEY" \
-  -H 'Content-Type: application/json' \
-  -X POST \
-  -d @"$PAYLOAD_FILE" > "$API_RESPONSE" 2> "$ERROR_OUTPUT"
+	-H 'Content-Type: application/json' \
+	-X POST \
+	-d @"$PAYLOAD_FILE" >"$API_RESPONSE" 2>"$ERROR_OUTPUT"
 
 # Check if response contains error
 if grep -q "error" "$API_RESPONSE"; then
-  echo "Error calling Gemini API. Check your API key and try again."
-  COMMIT_MSG=""
+	echo "Error calling Gemini API. Check your API key and try again."
+	COMMIT_MSG=""
 else
-  # Extract the commit message from the JSON response
-  if [ -s "$API_RESPONSE" ]; then
-    COMMIT_MSG=$(cat "$API_RESPONSE" | jq -r '.candidates[0].content.parts[0].text')
-  else
-    echo "Error: Empty response from API"
-    COMMIT_MSG=""
-  fi
+	# Extract the commit message from the JSON response
+	if [ -s "$API_RESPONSE" ]; then
+		COMMIT_MSG=$(cat "$API_RESPONSE" | jq -r '.candidates[0].content.parts[0].text')
+	else
+		echo "Error: Empty response from API"
+		COMMIT_MSG=""
+	fi
 fi
 
 # Clean up temp files
@@ -112,18 +112,19 @@ rm "$API_RESPONSE" "$ERROR_OUTPUT" "$PAYLOAD_FILE" "$TMP_FILES_CONTENT" "$TMP_DI
 echo -e "Generated commit message:\n\n$COMMIT_MSG"
 
 # Inform user about key options
-echo "Press 'y' to accept, 'n' to reject, or Ctrl+J to accept."
+echo "Press Enter/Return or 'y' to accept, any other key to reject."
 
-# Handle Ctrl+J as "yes" (special read setup)
-read -rsn1 -p "Use this message for commit? (y/n/Ctrl+J): " KEY
+# Read user input (but don't require pressing Enter after)
+read -p "Use this message for commit? [Y/n]: " -n 1 INPUT
 
-# Print newline after keypress
-echo
+# If user pressed Enter immediately, INPUT will be empty
+if [ -z "$INPUT" ] || [ "$INPUT" = "y" ] || [ "$INPUT" = "Y" ]; then
+	# Add newline if the user pressed a key (not just Enter)
+	[ -n "$INPUT" ] && echo
 
-# Check if the key is Ctrl+J (10), 'y', or 'Y'
-if [[ $(printf "%d" "'$KEY") -eq 10 || "$KEY" == "y" || "$KEY" == "Y" ]]; then
-    git commit -m "$COMMIT_MSG"
-    echo "Changes committed successfully!"
+	git commit -m "$COMMIT_MSG"
+	echo "Changes committed successfully!"
 else
-    echo "Commit aborted. You can manually commit with: git commit -m \"your message\""
+	echo
+	echo "Commit aborted. You can manually commit with: git commit -m \"your message\""
 fi
