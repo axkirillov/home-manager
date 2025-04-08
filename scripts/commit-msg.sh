@@ -109,10 +109,7 @@ fi
 rm "$API_RESPONSE" "$ERROR_OUTPUT" "$PAYLOAD_FILE" "$TMP_FILES_CONTENT" "$TMP_DIFF"
 
 # Output the generated commit message
-echo -e "Generated commit message:\n\n$COMMIT_MSG"
-
-# Inform user about key options
-echo "Press Enter/Return or 'y' to accept, any other key to reject."
+echo "Generated commit message: \"$COMMIT_MSG\""
 
 # Read user input (but don't require pressing Enter after)
 read -p "Use this message for commit? [Y/n]: " -n 1 INPUT
