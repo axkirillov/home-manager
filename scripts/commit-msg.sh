@@ -111,9 +111,17 @@ rm "$API_RESPONSE" "$ERROR_OUTPUT" "$PAYLOAD_FILE" "$TMP_FILES_CONTENT" "$TMP_DI
 # Output the generated commit message
 echo -e "Generated commit message:\n\n$COMMIT_MSG"
 
-# Ask if user wants to use this message
-read -p "Use this message for commit? (y/n): " CONFIRM
-if [ "$CONFIRM" = "y" ] || [ "$CONFIRM" = "Y" ]; then
+# Inform user about key options
+echo "Press 'y' to accept, 'n' to reject, or Ctrl+J to accept."
+
+# Handle Ctrl+J as "yes" (special read setup)
+read -rsn1 -p "Use this message for commit? (y/n/Ctrl+J): " KEY
+
+# Print newline after keypress
+echo
+
+# Check if the key is Ctrl+J (10), 'y', or 'Y'
+if [[ $(printf "%d" "'$KEY") -eq 10 || "$KEY" == "y" || "$KEY" == "Y" ]]; then
     git commit -m "$COMMIT_MSG"
     echo "Changes committed successfully!"
 else
