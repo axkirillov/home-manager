@@ -86,7 +86,7 @@ API_RESPONSE=$(mktemp)
 ERROR_OUTPUT=$(mktemp)
 
 # Make the API call
-curl -s "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=$GEMINI_API_KEY" \
+curl -s "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro-preview-03-25:generateContent?key=$GEMINI_API_KEY" \
 	-H 'Content-Type: application/json' \
 	-X POST \
 	-d @"$PAYLOAD_FILE" >"$API_RESPONSE" 2>"$ERROR_OUTPUT"
@@ -99,6 +99,8 @@ else
 	# Extract the commit message from the JSON response
 	if [ -s "$API_RESPONSE" ]; then
 		COMMIT_MSG=$(cat "$API_RESPONSE" | jq -r '.candidates[0].content.parts[0].text')
+		# Remove ``` backticks from the commit message
+		COMMIT_MSG=$(echo "$COMMIT_MSG" | sed -E 's/```|`//g')
 	else
 		echo "Error: Empty response from API"
 		COMMIT_MSG=""
