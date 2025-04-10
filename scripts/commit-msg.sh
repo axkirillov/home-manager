@@ -3,9 +3,9 @@
 # Generate a commit message using staged files and gemini model
 
 # Check if API key is provided as environment variable
-if [ -z "$GEMINI_API_KEY" ]; then
-	echo "Error: GEMINI_API_KEY environment variable is not set"
-	echo "Usage: GEMINI_API_KEY=your_api_key ./commit-msg.sh"
+if [ -z "$OPENAI_API_KEY" ]; then
+	echo "Error: OPENAI_API_KEY environment variable is not set"
+	echo "Usage: OPENAI_API_KEY=your_api_key ./commit-msg.sh"
 	exit 1
 fi
 
@@ -34,50 +34,66 @@ done
 git diff --cached >"$TMP_DIFF"
 
 # Build prompt
-PROMPT="Generate a concise and informative git commit message based on these staged changes.
-Format the message using the Conventional Commits specification:
-- Use one of these types: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert
-- Include an optional scope in parentheses after the type (e.g. feat(auth): ...)
-- The message should be in the imperative mood (e.g., 'add feature' not 'added feature').
-- Do not include emoji or trailing periods.
-- Keep it under 50 characters if possible.
+# Define the system prompt (instructions)
+SYSTEM_PROMPT="You are an expert programmer tasked with writing a concise and informative git commit message.
+Analyze the provided staged file contents and the corresponding diff, then generate a commit message adhering strictly to the Conventional Commits specification.
 
-Example formats:
-- feat(ui): add new button component
-- fix: resolve memory leak in worker
-- refactor(api): simplify authentication logic
+**Format Requirements:**
+- Structure: \`<type>[optional scope]: <description>\`
+  - Example: \`feat(api): add user authentication endpoint\`
+- Allowed Types: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert
+- Subject (\`<description>\`):
+  - Use the imperative, present tense (e.g., 'add', 'fix', 'change' not 'added', 'fixed', 'changed').
+  - Be concise, ideally under 50 characters.
+  - Do not capitalize the first letter.
+  - No trailing period.
+- Body (Optional):
+  - If necessary, add a blank line after the subject and provide a brief explanation of the 'why' behind the change.
+  - Keep body lines wrapped at 72 characters.
+- Footer (Optional):
+  - Use for referencing issues (e.g., \`Closes #123\`) or breaking changes (\`BREAKING CHANGE: ...\`).
 
-Here are the contents of the staged files:
+Generate *only* the commit message text, without any additional explanation or markdown formatting like backticks."
 
+# Define the user prompt (data)
+USER_PROMPT="**Staged File Contents:**
+\`\`\`
 $(cat "$TMP_FILES_CONTENT")
+\`\`\`
 
-And here's the diff of the changes:
-
-$(cat "$TMP_DIFF")"
+**Diff of Changes:**
+\`\`\`diff
+$(cat "$TMP_DIFF")
+\`\`\`"
 
 # Properly escape the prompt for JSON using jq
-ESCAPED_PROMPT=$(echo "$PROMPT" | jq -Rs .)
+# Properly escape the prompts for JSON using jq
+ESCAPED_SYSTEM_PROMPT=$(echo "$SYSTEM_PROMPT" | jq -Rs .)
+ESCAPED_USER_PROMPT=$(echo "$USER_PROMPT" | jq -Rs .)
 
 # Create a temporary file for the payload
 PAYLOAD_FILE=$(mktemp)
 
 # Write properly formatted JSON to the temp file
+# Write properly formatted JSON payload for OpenAI API
 cat >"$PAYLOAD_FILE" <<EOF
 {
-  "contents": [
+  "model": "gpt-4o",
+  "messages": [
     {
-      "parts": [
-        {
-          "text": $ESCAPED_PROMPT
-        }
-      ]
+      "role": "system",
+      "content": $ESCAPED_SYSTEM_PROMPT
+    },
+    {
+      "role": "user",
+      "content": $ESCAPED_USER_PROMPT
     }
   ],
-  "generationConfig": {
-    "temperature": 0.7,
-    "topP": 0.95,
-    "topK": 40
-  }
+  "temperature": 0.7,
+  "max_tokens": 150,
+  "top_p": 1.0,
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0
 }
 EOF
 
@@ -86,19 +102,21 @@ API_RESPONSE=$(mktemp)
 ERROR_OUTPUT=$(mktemp)
 
 # Make the API call
-curl -s "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro-preview-03-25:generateContent?key=$GEMINI_API_KEY" \
-	-H 'Content-Type: application/json' \
-	-X POST \
+curl -s "https://api.openai.com/v1/chat/completions" \
+	-H "Content-Type: application/json" \
+	-H "Authorization: Bearer $OPENAI_API_KEY" \
 	-d @"$PAYLOAD_FILE" >"$API_RESPONSE" 2>"$ERROR_OUTPUT"
 
 # Check if response contains error
-if grep -q "error" "$API_RESPONSE"; then
-	echo "Error calling Gemini API. Check your API key and try again."
+# Check if response contains error (OpenAI format)
+if jq -e '.error' "$API_RESPONSE" > /dev/null; then
+	echo "Error calling OpenAI API:"
+	cat "$API_RESPONSE" # Print the full error response
 	COMMIT_MSG=""
 else
 	# Extract the commit message from the JSON response
 	if [ -s "$API_RESPONSE" ]; then
-		COMMIT_MSG=$(cat "$API_RESPONSE" | jq -r '.candidates[0].content.parts[0].text')
+		COMMIT_MSG=$(cat "$API_RESPONSE" | jq -r '.choices[0].message.content')
 		# Remove ``` backticks from the commit message
 		COMMIT_MSG=$(echo "$COMMIT_MSG" | sed -E 's/```|`//g')
 	else
