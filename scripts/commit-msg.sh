@@ -66,7 +66,6 @@ $(cat "$TMP_FILES_CONTENT")
 $(cat "$TMP_DIFF")
 \`\`\`"
 
-# Properly escape the prompt for JSON using jq
 # Properly escape the prompts for JSON using jq
 ESCAPED_SYSTEM_PROMPT=$(echo "$SYSTEM_PROMPT" | jq -Rs .)
 ESCAPED_USER_PROMPT=$(echo "$USER_PROMPT" | jq -Rs .)
@@ -74,7 +73,6 @@ ESCAPED_USER_PROMPT=$(echo "$USER_PROMPT" | jq -Rs .)
 # Create a temporary file for the payload
 PAYLOAD_FILE=$(mktemp)
 
-# Write properly formatted JSON to the temp file
 # Write properly formatted JSON payload for OpenAI API
 cat >"$PAYLOAD_FILE" <<EOF
 {
@@ -107,7 +105,6 @@ curl -s "https://api.openai.com/v1/chat/completions" \
 	-H "Authorization: Bearer $OPENAI_API_KEY" \
 	-d @"$PAYLOAD_FILE" >"$API_RESPONSE" 2>"$ERROR_OUTPUT"
 
-# Check if response contains error
 # Check if response contains error (OpenAI format)
 if jq -e '.error' "$API_RESPONSE" > /dev/null; then
 	echo "Error calling OpenAI API:"
