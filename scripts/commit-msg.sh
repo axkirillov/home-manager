@@ -135,29 +135,41 @@ echo "Generated commit message: \"$COMMIT_MSG\""
 COMMIT_MSG_FILE=$(mktemp)
 echo "$COMMIT_MSG" > "$COMMIT_MSG_FILE"
 
-# Read user input (but don't require pressing Enter after)
-read -p "Edit this message before committing? [Y/n]: " -n 1 INPUT
+# Read user input (Y/Enter = Yes, E = Edit, N = No)
+read -p "Use this message? ([Y]es / [E]dit / [N]o): " -n 1 INPUT
+echo # Move to the next line after input
 
-# If user pressed Enter immediately, INPUT will be empty
-if [ -z "$INPUT" ] || [ "$INPUT" = "y" ] || [ "$INPUT" = "Y" ]; then
-	# Add newline if the user pressed a key (not just Enter)
-	[ -n "$INPUT" ] && echo
+# Handle the user's choice
+case "$INPUT" in
+	"" | "y" | "Y")
+		# Commit directly with the generated message
+		git commit -m "$COMMIT_MSG"
+		COMMIT_EXIT_CODE=$?
+		if [ $COMMIT_EXIT_CODE -eq 0 ]; then
+			echo "Changes committed successfully!"
+		else
+			echo "Commit failed."
+		fi
+		;;
+	"e" | "E")
+		# Open the editor with the generated message
+		git commit -e -F "$COMMIT_MSG_FILE"
+		COMMIT_EXIT_CODE=$?
+		if [ $COMMIT_EXIT_CODE -eq 0 ]; then
+			echo "Changes committed successfully!"
+		else
+			echo "Commit aborted or failed in editor."
+		fi
+		;;
+	"n" | "N")
+		# Abort the commit
+		echo "Commit aborted."
+		;;
+	*)
+		# Treat any other input as abort
+		echo "Invalid input. Commit aborted."
+		;;
+esac
 
-	# Open the editor with the generated message
-	git commit -e -F "$COMMIT_MSG_FILE"
-	COMMIT_EXIT_CODE=$? # Capture the exit code of the commit command
-
-	# Clean up the temp message file
-	rm "$COMMIT_MSG_FILE"
-
-	if [ $COMMIT_EXIT_CODE -eq 0 ]; then
-		echo "Changes committed successfully!"
-	else
-		echo "Commit aborted or failed in editor."
-	fi
-else
-	echo
-	# Clean up the temp message file even if aborted
-	rm "$COMMIT_MSG_FILE"
-	echo "Commit aborted. You can manually commit."
-fi
+# Clean up the temp message file regardless of the outcome
+rm "$COMMIT_MSG_FILE"
