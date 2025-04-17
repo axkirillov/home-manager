@@ -131,17 +131,33 @@ rm "$API_RESPONSE" "$ERROR_OUTPUT" "$PAYLOAD_FILE" "$TMP_FILES_CONTENT" "$TMP_DI
 # Output the generated commit message
 echo "Generated commit message: \"$COMMIT_MSG\""
 
+# Create a temporary file for the commit message
+COMMIT_MSG_FILE=$(mktemp)
+echo "$COMMIT_MSG" > "$COMMIT_MSG_FILE"
+
 # Read user input (but don't require pressing Enter after)
-read -p "Use this message for commit? [Y/n]: " -n 1 INPUT
+read -p "Edit this message before committing? [Y/n]: " -n 1 INPUT
 
 # If user pressed Enter immediately, INPUT will be empty
 if [ -z "$INPUT" ] || [ "$INPUT" = "y" ] || [ "$INPUT" = "Y" ]; then
 	# Add newline if the user pressed a key (not just Enter)
 	[ -n "$INPUT" ] && echo
 
-	git commit -m "$COMMIT_MSG"
-	echo "Changes committed successfully!"
+	# Open the editor with the generated message
+	git commit -e -F "$COMMIT_MSG_FILE"
+	COMMIT_EXIT_CODE=$? # Capture the exit code of the commit command
+
+	# Clean up the temp message file
+	rm "$COMMIT_MSG_FILE"
+
+	if [ $COMMIT_EXIT_CODE -eq 0 ]; then
+		echo "Changes committed successfully!"
+	else
+		echo "Commit aborted or failed in editor."
+	fi
 else
 	echo
-	echo "Commit aborted. You can manually commit with: git commit -m \"your message\""
+	# Clean up the temp message file even if aborted
+	rm "$COMMIT_MSG_FILE"
+	echo "Commit aborted. You can manually commit."
 fi
