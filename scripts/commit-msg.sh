@@ -3,9 +3,9 @@
 # Generate a commit message using staged files and gemini model
 
 # Check if API key is provided as environment variable
-if [ -z "$OPENAI_API_KEY" ]; then
-	echo "Error: OPENAI_API_KEY environment variable is not set"
-	echo "Usage: OPENAI_API_KEY=your_api_key ./commit-msg.sh"
+if [ -z "$GEMINI_API_KEY" ]; then
+	echo "Error: GEMINI_API_KEY environment variable is not set"
+	echo "Usage: GEMINI_API_KEY=your_api_key ./commit-msg.sh"
 	exit 1
 fi
 
@@ -66,32 +66,31 @@ $(cat "$TMP_FILES_CONTENT")
 $(cat "$TMP_DIFF")
 \`\`\`"
 
-# Properly escape the prompts for JSON using jq
-ESCAPED_SYSTEM_PROMPT=$(echo "$SYSTEM_PROMPT" | jq -Rs .)
-ESCAPED_USER_PROMPT=$(echo "$USER_PROMPT" | jq -Rs .)
+# Combine prompts and escape for JSON
+COMBINED_PROMPT="${SYSTEM_PROMPT}
+
+${USER_PROMPT}"
+ESCAPED_COMBINED_PROMPT=$(echo "$COMBINED_PROMPT" | jq -Rs .)
 
 # Create a temporary file for the payload
 PAYLOAD_FILE=$(mktemp)
 
-# Write properly formatted JSON payload for OpenAI API
+# Write properly formatted JSON payload for Gemini API
+# Note: Gemini doesn't have separate system/user roles in the same way.
+# We combine them into a single text part.
+# Configuration like temperature, max_tokens etc. can be added if needed,
+# see Gemini API documentation for 'generationConfig'.
 cat >"$PAYLOAD_FILE" <<EOF
 {
-  "model": "gpt-4o",
-  "messages": [
+  "contents": [
     {
-      "role": "system",
-      "content": $ESCAPED_SYSTEM_PROMPT
-    },
-    {
-      "role": "user",
-      "content": $ESCAPED_USER_PROMPT
+      "parts": [
+        {
+          "text": $ESCAPED_COMBINED_PROMPT
+        }
+      ]
     }
-  ],
-  "temperature": 0.7,
-  "max_tokens": 150,
-  "top_p": 1.0,
-  "frequency_penalty": 0.0,
-  "presence_penalty": 0.0
+  ]
 }
 EOF
 
@@ -99,25 +98,42 @@ EOF
 API_RESPONSE=$(mktemp)
 ERROR_OUTPUT=$(mktemp)
 
-# Make the API call
-curl -s "https://api.openai.com/v1/chat/completions" \
-	-H "Content-Type: application/json" \
-	-H "Authorization: Bearer $OPENAI_API_KEY" \
+# Make the API call to Gemini
+# Model name is part of the URL
+GEMINI_MODEL="gemini-2.5-flash-preview-04-17"
+GEMINI_URL="https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}"
+
+curl -s "$GEMINI_URL" \
+	-H 'Content-Type: application/json' \
+	-X POST \
 	-d @"$PAYLOAD_FILE" >"$API_RESPONSE" 2>"$ERROR_OUTPUT"
 
-# Check if response contains error (OpenAI format)
-if jq -e '.error' "$API_RESPONSE" > /dev/null; then
-	echo "Error calling OpenAI API:"
-	cat "$API_RESPONSE" # Print the full error response
+# Check if response contains candidates (Gemini format)
+# A more robust check might involve checking curl exit status or specific error fields
+if ! jq -e '.candidates | length > 0' "$API_RESPONSE" > /dev/null; then
+	echo "Error calling Gemini API or empty candidates received:"
+	if [ -s "$ERROR_OUTPUT" ]; then
+		cat "$ERROR_OUTPUT"
+	fi
+	if [ -s "$API_RESPONSE" ]; then
+		cat "$API_RESPONSE" # Print the full error response if available
+	fi
 	COMMIT_MSG=""
 else
 	# Extract the commit message from the JSON response
 	if [ -s "$API_RESPONSE" ]; then
-		COMMIT_MSG=$(cat "$API_RESPONSE" | jq -r '.choices[0].message.content')
-		# Remove ``` backticks from the commit message
-		COMMIT_MSG=$(echo "$COMMIT_MSG" | sed -E 's/```|`//g')
+		# Check if text part exists
+		if jq -e '.candidates[0].content.parts[0].text' "$API_RESPONSE" > /dev/null; then
+			COMMIT_MSG=$(cat "$API_RESPONSE" | jq -r '.candidates[0].content.parts[0].text')
+			# Remove ``` backticks from the commit message (optional, Gemini might not add them)
+			COMMIT_MSG=$(echo "$COMMIT_MSG" | sed -E 's/```|`//g')
+		else
+			echo "Error: Could not find text in Gemini response structure."
+			cat "$API_RESPONSE"
+			COMMIT_MSG=""
+		fi
 	else
-		echo "Error: Empty response from API"
+		echo "Error: Empty response file from API"
 		COMMIT_MSG=""
 	fi
 fi
