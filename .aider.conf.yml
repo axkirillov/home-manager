@@ -1,8 +1,0 @@
-gitignore: false
-read:
-  - conventions.md
-  - ~/instructions.md
-architect: true
-model: gemini
-watch-files: true
-auto-accept-architect: false
