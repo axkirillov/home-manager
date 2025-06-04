@@ -87,9 +87,9 @@
       aliases = {
         # A “shell” alias must start with “!” so that GH hands it off to your shell.
         run-notify = "!gh run watch && \
-          osascript -e 'display notification \"Workflow ✅\" with title \"GitHub Actions\"' \
+          osascript -e 'display notification \"Workflow ✅\" with title \"GitHub Actions\" sound name \"Submarine\"' \
           || \
-          osascript -e 'display notification \"Workflow ❌\" with title \"GitHub Actions\"'";
+          osascript -e 'display notification \"Workflow ❌\" with title \"GitHub Actions\" sound name \"Submarine\"'";
       };
     };
   };
