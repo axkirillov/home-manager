@@ -76,7 +76,23 @@
     extraConfig = "source ~/.config/home-manager/tmux.conf";
   };
 
-  programs.gh = { enable = true; };
+  programs.gh = {
+    enable = true;
+
+    settings = {
+      # …any other GH settings you already have, e.g.:
+      # git_protocol = "ssh";
+      # prompt      = "enabled";
+
+      aliases = {
+        # A “shell” alias must start with “!” so that GH hands it off to your shell.
+        run-notify = "!gh run watch && \
+          osascript -e 'display notification \"Workflow ✅\" with title \"GitHub Actions\"' \
+          || \
+          osascript -e 'display notification \"Workflow ❌\" with title \"GitHub Actions\"'";
+      };
+    };
+  };
 
   programs.ripgrep = {
     enable = true;
