@@ -100,7 +100,7 @@ ERROR_OUTPUT=$(mktemp)
 
 # Make the API call to Gemini
 # Model name is part of the URL
-GEMINI_MODEL="gemini-2.5-flash-preview-04-17"
+GEMINI_MODEL="gemini-2.5-flash"
 GEMINI_URL="https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}"
 
 curl -s "$GEMINI_URL" \
