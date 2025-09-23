@@ -65,11 +65,6 @@
     defaultOptions = [ "--bind=ctrl-j:accept" ];
   };
 
-  programs.zoxide = {
-    enable = true;
-    enableFishIntegration = true;
-  };
-
   programs.tmux = {
     enable = true;
     keyMode = "vi";
