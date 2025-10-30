@@ -27,6 +27,12 @@
       "description": "Send prompt to SQL agent",
       "agent": "sql",
       "subtask": false
+    },
+    "commit": {
+      "template": "Create a git commit for the current repository. If an input is provided, use it as the commit message; otherwise draft a concise message that explains why the changes are needed. Follow the repository's commit style and the 'Committing changes with git' workflow, using Bash to run git status, git diff, and git log; then stage relevant files and commit.",
+      "description": "Create a git commit (message optional)",
+      "subtask": false
     }
-  }
+  },
+  "instructions": ["**/AGENTS.md"]
 }
