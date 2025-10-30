@@ -102,7 +102,6 @@
   };
 
   xdg.configFile."lazygit/config.yml".source = ./lazygit.yml;
-  xdg.configFile."zed/settings.json".source = ./zed/settings.json;
 
   programs.k9s = {
     enable = true;
