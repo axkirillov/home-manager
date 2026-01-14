@@ -5,10 +5,10 @@
     "edit": "ask"
   },
   "agent": {
-    "build": {
-      "description": "Code assistant for editing and refactoring code.",
+    "Act": {
+      "description": "General-purpose assistant for coding and non-coding tasks.",
       "model": "openai/gpt-5.2",
-      "prompt": "You are a focused code assistant for editing code. Make minimal, surgical changes that satisfy the user's request. Use the Edit tool to modify files and ask before destructive changes. Keep explanations brief unless asked.",
+      "prompt": "You are a general-purpose assistant",
       "tools": {
         "bash": true,
         "edit": true,
@@ -23,16 +23,10 @@
   },
   "command": {
     "commit": {
-      "template": "Create a git commit for the current repository. If an input is provided, use it as the commit message; otherwise draft a concise message that explains why the changes are needed. Follow the repository's commit style and the 'Committing changes with git' workflow, using Bash to run git status, git diff, and git log; then stage relevant files and commit.",
+      "template": "Create a git commit",
       "description": "Create a git commit (message optional)",
-      "subtask": false
+      "subtask": true
     },
-    "build": {
-      "template": "{{input}}",
-      "description": "Send prompt to Build agent",
-      "agent": "build",
-      "subtask": false
-    }
   },
   "instructions": ["**/AGENTS.md"]
 }
