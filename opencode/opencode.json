@@ -5,21 +5,6 @@
     "edit": "ask"
   },
   "agent": {
-    "sql": {
-      "description": "SQL assistant for writing and reviewing queries.",
-      "model": "openai/gpt-5.2",
-      "prompt": "You are a focused SQL assistant. Given schema and a question, produce correct, efficient SQL for the specified dialect (default MySQL 8.0 if unspecified). Output only the final query unless the user asks for explanation. Ask for missing schema details before guessing.",
-      "tools": {
-        "bash": false,
-        "edit": false,
-        "webfetch": false
-      },
-      "permission": {
-        "bash": "deny",
-        "edit": "deny",
-        "webfetch": "deny"
-      }
-    },
     "build": {
       "description": "Code assistant for editing and refactoring code.",
       "model": "openai/gpt-5.2",
@@ -37,12 +22,6 @@
     }
   },
   "command": {
-    "sql": {
-      "template": "{{input}}",
-      "description": "Send prompt to SQL agent",
-      "agent": "sql",
-      "subtask": false
-    },
     "commit": {
       "template": "Create a git commit for the current repository. If an input is provided, use it as the commit message; otherwise draft a concise message that explains why the changes are needed. Follow the repository's commit style and the 'Committing changes with git' workflow, using Bash to run git status, git diff, and git log; then stage relevant files and commit.",
       "description": "Create a git commit (message optional)",
