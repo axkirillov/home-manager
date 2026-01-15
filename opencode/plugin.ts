@@ -1,19 +1,19 @@
 import type { Plugin } from "@opencode-ai/plugin";
 
 const SOUND = {
-  done: "/System/Library/Sounds/Tink.aiff",
   question: "/System/Library/Sounds/Hero.aiff",
   permission: "/System/Library/Sounds/Glass.aiff",
 } as const;
 
+const BEEP_DEBOUNCE_MS = 100;
+
 const plugin: Plugin = async (context) => {
   let lastBeepAt = 0;
-  let lastCompletedAssistantMessageId: string | undefined;
   let lastPermissionId: string | undefined;
 
   const beep = async (soundPath: string) => {
     const now = Date.now();
-    if (now - lastBeepAt < 500) return;
+    if (now - lastBeepAt < BEEP_DEBOUNCE_MS) return;
     lastBeepAt = now;
 
     await context.$`afplay ${soundPath}`.nothrow();
@@ -29,21 +29,6 @@ const plugin: Plugin = async (context) => {
     "tool.execute.before": async (input) => {
       if (input.tool !== "question") return;
       await beep(SOUND.question);
-    },
-
-    event: async (input) => {
-      if (input.event.type === "message.updated") {
-        const info = input.event.properties.info;
-        if (info.role !== "assistant") return;
-        if (info.time.completed == null) return;
-        if (info.id === lastCompletedAssistantMessageId) return;
-        lastCompletedAssistantMessageId = info.id;
-        await beep(SOUND.done);
-      }
-
-      if (input.event.type === "session.idle") {
-        await beep(SOUND.done);
-      }
     },
   };
 };
