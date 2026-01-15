@@ -40,7 +40,8 @@
       "tools": {
         "bash": true,
         "edit": true,
-        "webfetch": true
+        "webfetch": true,
+        "skill": true
       }
     }
   },
