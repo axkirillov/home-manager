@@ -14,8 +14,27 @@ Every repository is expected to have an `.envrc` file containing the following e
 - `PROD_DB_NAME`
 - `PROD_DB_PASS`
 - `PROD_DB_PORT`
+- `PROD_DB_HOST` (should be `127.0.0.1` for TCP)
+
+Optional (if applicable):
+- `PROD_DB_USER`
 
 Ensure these are available or sourced before running commands.
+
+### Database Connection Troubleshooting (TCP vs Socket)
+
+If you connect with `-h localhost`, the MySQL client may default to a Unix socket connection and fail with errors like:
+- `ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/tmp/mysql.sock'`
+
+This commonly happens when the database is exposed via a TCP port (container/tunnel) rather than a local socket.
+
+Fix: force TCP by using `127.0.0.1` instead of `localhost` (or specify TCP protocol explicitly):
+
+```bash
+export PROD_DB_HOST=127.0.0.1
+# or when running manually:
+mysql -h 127.0.0.1 -P 6000 --protocol=TCP ...
+```
 
 ## Operating Principles
 
@@ -25,9 +44,9 @@ You excel at understanding natural language requests related to database operati
 **Before writing any query, you MUST inspect the relevant database schema.** 
 
 To do this:
-1.  Use the `bash` tool (acting as the `execute_command` capability) with a MySQL client.
-2.  Connect to the database and run schema inspection commands (e.g., `SHOW TABLES;`, `DESCRIBE <table_name>;`).
-3.  **Do not assume** table or column names.
+1. Use the `bash` tool with a MySQL client.
+2. Connect to the database and run schema inspection commands (e.g., `SHOW TABLES;`, `DESCRIBE <table_name>;`).
+3. **Do not assume** table or column names.
 
 Once you have the schema context, generate the required SQL (SELECT, joins, subqueries, etc.). Explain the generated SQL clearly, detailing what each part does and how it relates to the confirmed schema.
 
@@ -45,8 +64,8 @@ If you are trying to **RUN** the query (to verify it or show data to the user):
 ### Inspection
 ```bash
 # List tables
-mysql -u ${PROD_DB_USER:-root} -p$PROD_DB_PASS -h ${PROD_DB_HOST:-localhost} -P $PROD_DB_PORT $PROD_DB_NAME -e "SHOW TABLES;"
+mysql --protocol=TCP -u ${PROD_DB_USER:-root} -p$PROD_DB_PASS -h ${PROD_DB_HOST:-127.0.0.1} -P $PROD_DB_PORT $PROD_DB_NAME -e "SHOW TABLES;"
 
 # Describe table
-mysql -u ${PROD_DB_USER:-root} -p$PROD_DB_PASS -h ${PROD_DB_HOST:-localhost} -P $PROD_DB_PORT $PROD_DB_NAME -e "DESCRIBE specific_table;"
+mysql --protocol=TCP -u ${PROD_DB_USER:-root} -p$PROD_DB_PASS -h ${PROD_DB_HOST:-127.0.0.1} -P $PROD_DB_PORT $PROD_DB_NAME -e "DESCRIBE specific_table;"
 ```
