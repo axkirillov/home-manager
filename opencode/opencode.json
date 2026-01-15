@@ -25,6 +25,7 @@
       "tail*": "allow",
       "wc*": "allow",
       "rg*": "allow",
+      "fd*": "allow",
       "mgrep*": "allow"
     },
     "edit": "ask",
