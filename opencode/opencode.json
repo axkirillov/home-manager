@@ -50,6 +50,21 @@
       "description": "Create a git commit (message optional)",
       "subtask": true
     },
+    "new-branch-and-commit": {
+      "template": "Create a new git branch and commit the current changes.\n\nInputs:\n- Branch name: $1 (if empty, propose one and ask me to confirm)\n- Commit message: $2 (if empty, propose one and ask me to confirm)\n\nWorkflow:\n1) Run git status and summarize changes.\n2) Create/switch to the branch (prefer: git switch -c).\n3) Stage changes (default: git add -A) and show staged diff stat.\n4) Commit with the confirmed message.\n\nSafety:\n- Never commit secrets; stop and ask.",
+      "description": "Create branch and commit",
+      "subtask": true
+    },
+    "commit-and-push": {
+      "template": "Commit the current changes and push the current branch to the remote.\n\nInputs:\n- Commit message: $1 (if empty, propose one and ask me to confirm)\n\nWorkflow:\n1) Run git status and summarize changes.\n2) Confirm current branch is not main/master.\n3) Stage changes (default: git add -A) and show staged diff stat.\n4) Commit with the confirmed message.\n5) Push with upstream if needed (prefer: git push -u origin HEAD).\n\nSafety:\n- Never commit secrets; stop and ask.\n- Never push directly to main/master.",
+      "description": "Commit and push current branch",
+      "subtask": true
+    },
+    "new-branch-commit-and-push": {
+      "template": "Create a new git branch, commit the current changes, and push to the remote.\n\nInputs:\n- Branch name: $1 (if empty, propose one and ask me to confirm)\n- Commit message: $2 (if empty, propose one and ask me to confirm)\n\nWorkflow:\n1) Run git status and summarize changes.\n2) Create/switch to the branch (prefer: git switch -c).\n3) Stage changes (default: git add -A) and show staged diff stat.\n4) Commit with the confirmed message.\n5) Push with upstream (prefer: git push -u origin HEAD).\n\nSafety:\n- Never commit secrets; stop and ask.\n- Never push directly to main/master.",
+      "description": "Create branch, commit, push",
+      "subtask": true
+    }
   },
   "mcp": {
     "mgrep": {
