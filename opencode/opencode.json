@@ -24,11 +24,13 @@
       "head*": "allow",
       "tail*": "allow",
       "wc*": "allow",
-      "rg*": "allow"
+      "rg*": "allow",
+      "mgrep*": "allow"
     },
     "edit": "ask",
     "webfetch": "allow",
-    "question": "allow"
+    "question": "allow",
+    "mgrep": "allow"
   },
   "agent": {
     "Build": {
@@ -48,6 +50,13 @@
       "description": "Create a git commit (message optional)",
       "subtask": true
     },
+  },
+  "mcp": {
+    "mgrep": {
+      "type": "local",
+      "command": ["mgrep", "mcp"],
+      "enabled": true
+    }
   },
   "instructions": ["**/AGENTS.md"]
 }
