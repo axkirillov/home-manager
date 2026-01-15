@@ -10,9 +10,16 @@ Use this skill when the user asks to create, update, rename, or delete an **open
 
 ## Where opencode skills live
 
-- Skills live at `./opencode/skill/<name>/SKILL.md`.
-- Treat `./opencode` as the opencode configuration root (it may be a symlink).
-- The skill directory name must exactly match the `name:` in the frontmatter.
+OpenCode discovers skills from:
+
+- Project config: `.opencode/skill/<name>/SKILL.md`
+- Global config: `~/.config/opencode/skill/<name>/SKILL.md`
+
+In this setup, skills are maintained in the home-manager repo at:
+
+- `~/.config/home-manager/opencode/skill/<name>/SKILL.md`
+
+The skill directory name must exactly match the `name:` in the frontmatter.
 
 ## Process
 
@@ -40,7 +47,10 @@ Use this skill when the user asks to create, update, rename, or delete an **open
      - What actions are allowed/disallowed when following this skill?
 
 3. Choose location and structure
-   - Always store the skill at: `./opencode/skill/<name>/SKILL.md`.
+   - Make changes in the home-manager repo at: `~/.config/home-manager/opencode/skill/<name>/SKILL.md`.
+   - Even if the current working directory is a different repo, run git commands against home-manager:
+     - `git -C ~/.config/home-manager status`
+     - `git -C ~/.config/home-manager diff`
    - Ensure the directory name exactly matches the skill `name`.
    - Create missing directories as needed.
 
@@ -63,7 +73,12 @@ Use this skill when the user asks to create, update, rename, or delete an **open
 6. Delete a skill (if requested)
    - Confirm the exact target skill.
    - Search for references to the skill name before deletion.
-   - Delete the entire `./opencode/skill/<name>/` directory.
+   - Delete the entire `~/.config/home-manager/opencode/skill/<name>/` directory.
+
+7. Commit changes
+   - Create a git commit in `~/.config/home-manager` for any skill changes.
+   - Keep commits scoped (one logical change per commit).
+   - Prefer commit messages like `feat(skills): ...` / `fix(skills): ...`.
 
 ## Templates
 
@@ -101,11 +116,11 @@ Use this skill when the user requests <topic>.
 - [ ] Confirm exact skill name.
 - [ ] Search for references (prefer `rg`).
 - [ ] Update/remove references.
-- [ ] Delete the entire `./opencode/skill/<name>/` directory.
+- [ ] Delete the entire `~/.config/home-manager/opencode/skill/<name>/` directory.
 
 ## Common Issues
 
-- Skill name doesn’t match directory name: ensure `./opencode/skill/<name>/SKILL.md` uses the same `name` as the folder.
+- Skill name doesn’t match directory name: ensure `~/.config/home-manager/opencode/skill/<name>/SKILL.md` uses the same `name` as the folder.
 - Missing `compatibility: opencode`: opencode won’t treat the skill as compatible.
 - Rename performed but references remain: search and update any docs/config that mention the old skill name.
 - Deleted skill still appears: restart/reload opencode if it caches skills.
