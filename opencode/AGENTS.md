@@ -1,3 +1,0 @@
-- Use `mgrep` for semantic code exploration.
-- ALWAYS use `rg` instead of `grep` for better performance when searching files.
-- ALWAYS `fd` instead of `find` for better performance when locating files.
