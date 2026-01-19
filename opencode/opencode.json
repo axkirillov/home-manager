@@ -62,6 +62,11 @@
       "description": "Commit and push current branch",
       "subtask": true
     },
+    "pr-comments": {
+      "template": "Pull and summarize PR comments for the GitHub PR associated with the current git branch.\n\nPrefer using the `pr-comments` skill (read-only).\n\nInputs:\n- Mode: $1 (optional: summary|raw-json; default: summary)\n\nWorkflow:\n1) Resolve the PR for the current branch (prefer: `gh pr view --json number,url,title,headRefName,baseRefName`).\n2) Fetch comment data (conversation comments, reviews, inline review comments) using `gh api ... --paginate`.\n3) Output a grouped summary, or raw JSON if mode is `raw-json`.\n\nSafety:\n- Read-only; do not post/edit/delete comments.\n- If no PR is found, report that clearly.",
+      "description": "Pull PR comments for current branch",
+      "subtask": true
+    },
     "new-branch-commit-and-push": {
       "template": "Create a new git branch, commit the current changes, and push to the remote.\n\nInputs:\n- Branch name: $1 (if empty, propose one and ask me to confirm)\n- Commit message: $2 (if empty, propose one and ask me to confirm)\n\nWorkflow:\n1) Run git status and summarize changes.\n2) Create/switch to the branch (prefer: git switch -c).\n3) Stage changes (default: git add -A) and show staged diff stat.\n4) Commit with the confirmed message.\n5) Push with upstream (prefer: git push -u origin HEAD).\n\nSafety:\n- Never commit secrets; stop and ask.\n- Never push directly to main/master.",
       "description": "Create branch, commit, push",
