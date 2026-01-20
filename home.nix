@@ -43,6 +43,7 @@
     pkgs.redis
     pkgs.clipboard-jh
     pkgs.nixfmt
+    pkgs.bun
   ];
 
   xdg.enable = true;
@@ -69,6 +70,14 @@
     enable = true;
     keyMode = "vi";
     extraConfig = "source ~/.config/home-manager/tmux.conf";
+  };
+
+  home.file.".local/bin/muxcode" = {
+    executable = true;
+    text = ''
+      #!/usr/bin/env bash
+      exec ${pkgs.bun}/bin/bun "$HOME/repo/muxcode/packages/muxcode/src/cli.ts" "$@"
+    '';
   };
 
   programs.gh = {
